@@ -5,9 +5,10 @@ export type ProductCategory = { name: string; description: string };
 export const shop = {
   name: 'Bone Barber Shop',
   address: 'Jalan Bima No. 12, Kejaksan, Kota Cirebon, Jawa Barat',
+  mapsUrl: 'https://maps.app.goo.gl/qwCqZDL1PW3LpYA98?g_st=ic',
   // Isi hanya setelah koordinat toko dikonfirmasi dan diverifikasi admin.
   coordinates: null as Coordinate | null,
-  openingHours: 'Perlu diisi admin',
+  openingHours: 'Senin–Sabtu: 09.00–20.00; Minggu: 10.00–20.00',
   phone: 'Perlu diisi admin',
   whatsapp: 'Perlu diisi admin',
   productCategories: [

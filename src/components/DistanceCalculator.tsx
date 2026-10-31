@@ -14,9 +14,6 @@ export function DistanceCalculator() {
   const [result, setResult] = useState<number | null>(null);
   const [manualLat, setManualLat] = useState('');
   const [manualLon, setManualLon] = useState('');
-  const destination = encodeURIComponent(shop.address);
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
-
   function calculate(origin: Coordinate) {
     if (!shop.coordinates) {
       setResult(null);
@@ -87,7 +84,7 @@ export function DistanceCalculator() {
       {result !== null && <div className="distance-result" role="status"><span>Jarak garis lurus</span><strong>{result.toFixed(2)} <small>km</small></strong></div>}
       <div className="destination-row"><MapPin size={16} /><span><b>Tujuan</b><br />{shop.address}</span></div>
       <p className="distance-note">Jarak garis lurus berbeda dengan jarak perjalanan melalui jalan. Alamat teks belum dapat digunakan untuk kalkulasi; diperlukan koordinat.</p>
-      <a className="map-link" href={directionsUrl} target="_blank" rel="noreferrer">Lihat Rute di Google Maps <ExternalLink size={15} /></a>
+      <a className="map-link" href={shop.mapsUrl} target="_blank" rel="noreferrer">Lihat lokasi di Google Maps <ExternalLink size={15} /></a>
     </section>
   );
 }

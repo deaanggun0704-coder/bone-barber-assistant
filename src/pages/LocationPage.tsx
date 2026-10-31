@@ -3,7 +3,6 @@ import { DistanceCalculator } from '../components/DistanceCalculator';
 import { shop } from '../data/shop';
 
 export function LocationPage() {
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.address)}`;
   return (
     <main className="page-main section-pad">
       <div className="container">
@@ -15,7 +14,7 @@ export function LocationPage() {
         <div className="location-grid">
           <section className="location-card">
             <div className="location-visual"><span className="map-pin-large"><MapPin size={25} /></span><span className="location-coordinate-label">BONE BARBER SHOP · CIREBON</span><div className="map-grid-lines" /></div>
-            <div className="location-details"><div className="section-eyebrow">ALAMAT KAMI</div><h2>{shop.name}</h2><p>{shop.address}</p><a className="button button-outline" href={mapsUrl} target="_blank" rel="noreferrer">Buka di Google Maps <ExternalLink size={15} /></a></div>
+            <div className="location-details"><div className="section-eyebrow">ALAMAT KAMI</div><h2>{shop.name}</h2><p>{shop.address}</p><a className="button button-outline" href={shop.mapsUrl} target="_blank" rel="noreferrer">Buka lokasi di Google Maps <ExternalLink size={15} /></a></div>
           </section>
           <DistanceCalculator />
         </div>

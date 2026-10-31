@@ -10,8 +10,10 @@ describe('getFaqAnswer', () => {
     expect(getFaqAnswer('bagaimana resep nasi goreng?')).toBe(outsideTopicAnswer);
   });
 
-  it('uses the not-yet-configured placeholder for missing operational info', () => {
-    expect(getFaqAnswer('jam buka hari ini')).toContain('Perlu diisi admin');
+  it('answers with the confirmed opening hours', () => {
+    const answer = getFaqAnswer('jam buka hari ini');
+    expect(answer).toContain('Senin–Sabtu: 09.00–20.00');
+    expect(answer).toContain('Minggu: 10.00–20.00');
   });
 
   it('uses the unavailable-information response for an unsupported shop question', () => {
