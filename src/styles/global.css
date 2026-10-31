@@ -143,6 +143,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .service-card > p { max-width: 85%; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .service-price { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
 .service-price strong { color: var(--ink); font-size: 11px; }
+.service-duration { margin: 8px 0 0 !important; color: var(--muted); font-size: 9px !important; }
 .service-arrow { position: absolute; right: 24px; bottom: 17px; color: var(--gold); }
 .cta-banner { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-block: 80px; padding: 34px 40px; background: var(--gold); color: #1e1b15; }
 .cta-banner .section-eyebrow { color: #3a3020; }
@@ -203,7 +204,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .centered-intro h1 { margin-top: 15px; font-size: clamp(41px, 5vw, 61px); }
 .centered-intro > p { margin-inline: auto; }
 .page-service-grid { max-width: 900px; margin: 0 auto; }
-.admin-note { margin: 22px auto 0; color: var(--muted); font-size: 10px; text-align: center; }
+.admin-note { margin: 22px auto 0; color: var(--muted); font-size: 10px; text-align: center; line-height: 1.7; }
+.product-section { max-width: 900px; margin: 70px auto 0; padding-top: 38px; border-top: 1px solid var(--line); }
+.product-section-heading { margin-bottom: 22px; }
+.product-section-heading h2 { margin: 10px 0 7px; font-family: Georgia, serif; font-size: 29px; font-weight: 500; }
+.product-section-heading > p { margin: 0; color: var(--muted); font-size: 11px; }
+.product-category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.product-category-card { min-height: 120px; padding: 17px; border: 1px solid var(--line); background: var(--surface); }
+.product-category-card h3 { margin: 13px 0 6px; font-family: Georgia, serif; font-size: 16px; font-weight: 500; }
+.product-category-card p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
 .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
 .location-card, .distance-card { border: 1px solid var(--line); background: var(--surface); }
 .location-visual { position: relative; overflow: hidden; display: grid; height: 210px; place-items: center; background-color: #27261f; background-image: linear-gradient(32deg, transparent 45%, rgba(209,171,105,.17) 45.4%, rgba(209,171,105,.17) 45.8%, transparent 46.2%), linear-gradient(115deg, transparent 60%, rgba(209,171,105,.12) 60.4%, rgba(209,171,105,.12) 60.8%, transparent 61.2%), repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,.045) 40px 41px), repeating-linear-gradient(90deg, transparent 0 52px, rgba(255,255,255,.04) 53px 54px); }
@@ -295,6 +304,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .feature-card h3 { margin-top: 15px; }
   .section-heading { align-items: flex-start; flex-direction: column; }
   .service-grid { grid-template-columns: 1fr; }
+  .product-category-grid { grid-template-columns: repeat(2, 1fr); }
   .service-card { min-height: 190px; }
   .cta-banner { align-items: flex-start; flex-direction: column; margin-block: 50px; padding: 27px 23px; }
   .cta-copy h2 { font-size: 25px; }
@@ -306,6 +316,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .centered-intro { margin-bottom: 30px; }
   .centered-intro h1 { font-size: 43px; }
   .location-grid { grid-template-columns: 1fr; }
+  .product-section { margin-top: 50px; padding-top: 28px; }
+  .product-category-grid { grid-template-columns: 1fr; }
   .location-visual { height: 180px; }
   .distance-card { padding: 19px; }
   .about-layout { grid-template-columns: 1fr; gap: 30px; padding-block: 47px; }

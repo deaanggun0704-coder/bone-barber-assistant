@@ -54,7 +54,7 @@ export function HomePage() {
         <section className="section-pad services-preview">
           <div className="container">
             <div className="section-heading"><div><div className="section-eyebrow"><Scissors size={14} /> APA YANG KAMI TAWARKAN</div><h2>Perawatan yang pas.<br /><span>Tanpa basa-basi.</span></h2></div><Link className="button button-outline" to="/layanan">Semua layanan <ArrowRight size={16} /></Link></div>
-            <div className="service-grid">{shop.services.map((service, index) => <ServiceCard key={service.name} service={service} index={index} />)}</div>
+            <div className="service-grid">{shop.services.slice(0, 4).map((service, index) => <ServiceCard key={service.name} service={service} index={index} />)}</div>
           </div>
         </section>
 

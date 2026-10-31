@@ -1,5 +1,6 @@
 export type Coordinate = { lat: number; lon: number };
-export type Service = { name: string; description: string; price: string };
+export type Service = { name: string; description: string; price: string; duration: string };
+export type ProductCategory = { name: string; description: string };
 
 export const shop = {
   name: 'Bone Barber Shop',
@@ -9,18 +10,64 @@ export const shop = {
   openingHours: 'Perlu diisi admin',
   phone: 'Perlu diisi admin',
   whatsapp: 'Perlu diisi admin',
-  products: ['Perlu diisi admin'],
+  productCategories: [
+    { name: 'Pomade', description: 'Produk styling rambut berbahan dasar minyak atau air.' },
+    { name: 'Shampoo', description: 'Produk perawatan rambut dan kulit kepala.' },
+    { name: 'Conditioner', description: 'Produk pelembap dan perawatan rambut.' },
+    { name: 'Wax & Clay', description: 'Produk styling rambut berbahan wax dan clay.' },
+    { name: 'Beard Care', description: 'Produk perawatan jenggot dan kumis.' },
+    { name: 'Aksesori', description: 'Kategori aksesori barbershop.' },
+    { name: 'Lainnya', description: 'Kategori produk lainnya.' },
+  ] satisfies ProductCategory[],
   paymentMethods: ['Perlu diisi admin'],
   services: [
     {
-      name: 'Potong Rambut',
-      description: 'Informasi layanan dan harga perlu dikonfirmasi admin.',
-      price: 'Perlu diisi admin',
+      name: 'Haircut Reguler',
+      description: 'Potong rambut standar.',
+      price: 'Rp35.000',
+      duration: '30 menit',
     },
     {
-      name: 'Layanan lain (perlu diisi admin)',
-      description: 'Daftar layanan lain akan diperbarui setelah dikonfirmasi.',
-      price: 'Perlu diisi admin',
+      name: 'Haircut + Cuci',
+      description: 'Potong rambut dan cuci rambut.',
+      price: 'Rp50.000',
+      duration: '45 menit',
+    },
+    {
+      name: 'Cukur Jenggot',
+      description: 'Cukur dan rapikan jenggot dengan pisau cukur.',
+      price: 'Rp25.000',
+      duration: '20 menit',
+    },
+    {
+      name: 'Creambath',
+      description: 'Perawatan rambut dengan creambath.',
+      price: 'Rp75.000',
+      duration: '60 menit',
+    },
+    {
+      name: 'Color / Pewarnaan',
+      description: 'Pewarnaan rambut sesuai pilihan.',
+      price: 'Rp150.000',
+      duration: '90 menit',
+    },
+    {
+      name: 'Haircut Premium',
+      description: 'Potong rambut, cuci, dan styling premium.',
+      price: 'Rp100.000',
+      duration: '60 menit',
+    },
+    {
+      name: 'Kids Haircut',
+      description: 'Potong rambut anak di bawah 12 tahun.',
+      price: 'Rp30.000',
+      duration: '30 menit',
+    },
+    {
+      name: 'Paket Lengkap',
+      description: 'Haircut, cukur jenggot, cuci, dan styling.',
+      price: 'Rp150.000',
+      duration: '90 menit',
     },
   ] satisfies Service[],
 };

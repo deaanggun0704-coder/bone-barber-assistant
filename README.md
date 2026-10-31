@@ -23,7 +23,7 @@ npm run preview
 
 ## Mengisi data usaha
 
-Edit `src/data/shop.ts` untuk alamat, koordinat toko yang diverifikasi, layanan/harga, jam operasional, telepon, WhatsApp, produk, dan metode pembayaran. Jangan memasukkan koordinat perkiraan. Edit `src/data/faq.ts` untuk menambahkan FAQ dan kata kunci.
+Edit `src/data/shop.ts` untuk alamat, koordinat toko yang diverifikasi, layanan/harga, jam operasional, telepon, WhatsApp, kategori retail, dan metode pembayaran. Harga serta durasi layanan saat ini disalin dari data bawaan SQL sistem operasional dan ditandai perlu dikonfirmasi admin; verifikasi sebelum menganggapnya sebagai harga berlaku. Kategori retail bukan jaminan stok tersedia; nama/merek, harga jual, dan stok harus dilengkapi admin. Jangan memasukkan koordinat perkiraan. Edit `src/data/faq.ts` untuk menambahkan FAQ dan kata kunci.
 
 Alamat rumah berupa teks tidak otomatis diubah menjadi koordinat. Form manual menerima latitude dan longitude, tanpa layanan geocoding. Koordinat pengguna hanya berada di memori halaman; Local Storage dipakai hanya untuk preferensi tema.
 

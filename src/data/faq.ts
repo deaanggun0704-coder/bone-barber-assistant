@@ -37,12 +37,12 @@ export const faq: FaqEntry[] = [
   {
     intent: 'services',
     keywords: ['layanan', 'servis', 'potong rambut', 'haircut', 'cukur', 'daftar layanan'],
-    answer: `Layanan yang tercatat: ${shop.services.map((service) => service.name).join(', ')}. Detail layanan: Perlu diisi admin.`,
+    answer: `Layanan pada data sistem: ${shop.services.map((service) => `${service.name} (${service.duration})`).join('; ')}. Data ini berasal dari daftar bawaan situs operasional dan perlu dikonfirmasi admin.`,
   },
   {
     intent: 'prices',
     keywords: ['harga potong rambut', 'harga', 'tarif', 'biaya', 'price'],
-    answer: `Harga layanan belum dikonfirmasi: ${shop.services.map((service) => `${service.name}: ${service.price}`).join('; ')}.`,
+    answer: `Harga acuan dari data bawaan situs operasional (belum dikonfirmasi admin): ${shop.services.map((service) => `${service.name}: ${service.price}`).join('; ')}. Mohon konfirmasi harga terbaru kepada admin sebelum berkunjung.`,
   },
   {
     intent: 'booking',
@@ -57,7 +57,7 @@ export const faq: FaqEntry[] = [
   {
     intent: 'products',
     keywords: ['produk', 'pomade', 'wax', 'sampo', 'shampoo'],
-    answer: `Produk perawatan rambut: ${shop.products.join(', ')}.`,
+    answer: `Kategori produk yang tercatat di sistem: ${shop.productCategories.map((category) => category.name).join(', ')}. Nama/merek produk, harga jual, dan stok perlu dikonfirmasi admin; daftar kategori tidak memastikan stok tersedia saat ini.`,
   },
   {
     intent: 'payment',
