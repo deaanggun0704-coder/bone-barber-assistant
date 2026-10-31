@@ -7,7 +7,6 @@ export type FaqEntry = {
 };
 
 const unknown = 'Maaf, informasi tersebut belum tersedia. Silakan hubungi admin Bone Barber Shop untuk mendapatkan informasi lebih lanjut.';
-const missing = 'Perlu diisi admin. ' + unknown;
 const shopTopics = [
   'bone barber', 'barbershop', 'barber', 'potong rambut', 'rambut', 'cukur',
   'layanan', 'servis', 'harga', 'tarif', 'reservasi', 'booking', 'jadwal',
@@ -47,7 +46,7 @@ export const faq: FaqEntry[] = [
   {
     intent: 'booking',
     keywords: ['reservasi', 'booking', 'pesan jadwal', 'buat janji', 'appointment', 'antrian'],
-    answer: `Informasi dan prosedur reservasi: ${missing}`,
+    answer: 'Untuk mengajukan reservasi, isi formulir di halaman Reservasi dengan nama, nomor WhatsApp/HP, layanan, tanggal, dan jam. Permintaan akan menunggu konfirmasi admin/kasir.',
   },
   {
     intent: 'contact',

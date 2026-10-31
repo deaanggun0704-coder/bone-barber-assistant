@@ -32,6 +32,12 @@ describe('getFaqAnswer', () => {
     expect(answer).toContain('harga jual, dan stok');
   });
 
+  it('directs reservation questions to the reservation form and says admin confirms', () => {
+    const answer = getFaqAnswer('bagaimana cara reservasi?');
+    expect(answer).toContain('halaman Reservasi');
+    expect(answer).toContain('menunggu konfirmasi admin/kasir');
+  });
+
   it('does not answer an empty question as if it were an FAQ match', () => {
     expect(getFaqAnswer('')).not.toBe(faq[0].answer);
   });

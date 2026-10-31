@@ -1,6 +1,7 @@
 import { ArrowUp, Bot, RotateCcw, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { getFaqAnswer } from '../data/faq';
 
 type Message = { id: number; sender: 'bot' | 'user'; text: string };
@@ -65,7 +66,10 @@ export function ChatWidget() {
         {messages.map((message) => (
           <div className={`message-row ${message.sender}`} key={message.id}>
             {message.sender === 'bot' && <span className="message-avatar"><Bot size={14} /></span>}
-            <p className="message-bubble">{message.text}</p>
+            <div className="message-content">
+              <p className="message-bubble">{message.text}</p>
+              {message.sender === 'bot' && message.text.includes('halaman Reservasi') && <Link className="chat-action-link" to="/reservasi">Isi formulir reservasi</Link>}
+            </div>
           </div>
         ))}
         {processing && <div className="message-row bot"><span className="message-avatar"><Bot size={14} /></span><div className="message-bubble typing" aria-label="Sedang memproses"><i /><i /><i /></div></div>}

@@ -58,7 +58,7 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="container cta-banner"><div className="cta-pattern" /><div className="cta-copy"><div className="section-eyebrow"><span className="eyebrow-line" /> NEED A QUICK ANSWER?</div><h2>Mulai dari satu pertanyaan.</h2><p>Asisten Bone siap membantu kapan saja.</p></div><Link className="button button-dark" to="/chat">Mulai percakapan <ArrowRight size={17} /></Link></section>
+        <section className="container cta-banner"><div className="cta-pattern" />        <div className="cta-copy"><div className="section-eyebrow"><span className="eyebrow-line" /> NEED A QUICK ANSWER?</div><h2>Mulai dari satu pertanyaan.</h2><p>Asisten Bone siap membantu kapan saja.</p></div><div className="cta-actions"><Link className="button button-dark" to="/chat">Mulai percakapan <ArrowRight size={17} /></Link><Link className="button button-dark" to="/reservasi">Ajukan reservasi <ArrowRight size={17} /></Link></div></section>
       </main>
     </>
   );

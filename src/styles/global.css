@@ -153,6 +153,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .cta-pattern { position: absolute; right: 22%; top: -100px; width: 280px; height: 280px; border: 1px solid rgba(38,31,20,.14); border-radius: 50%; }
 .cta-pattern::before, .cta-pattern::after { position: absolute; content: ''; inset: 19px; border: 1px solid rgba(38,31,20,.12); border-radius: 50%; }
 .cta-pattern::after { inset: 40px; }
+.cta-actions { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 10px; }
 
 /* Chat */
 .chat-page-grid { display: grid; grid-template-columns: .82fr 1fr; align-items: center; gap: 65px; padding-block: 55px; }
@@ -175,9 +176,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .chat-date { align-self: center; padding-bottom: 6px; color: var(--muted); font-size: 8px; }
 .message-row { display: flex; align-items: flex-end; gap: 7px; max-width: 92%; }
 .message-row.user { align-self: flex-end; }
+.message-content { min-width: 0; }
 .message-avatar { display: grid; flex: 0 0 23px; width: 23px; height: 23px; place-items: center; border-radius: 50%; background: var(--gold-soft); color: var(--gold); }
 .message-bubble { margin: 0; padding: 10px 12px; border-radius: 10px 10px 10px 2px; background: var(--surface-2); color: var(--ink); font-size: 10px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
 .message-row.user .message-bubble { border-radius: 10px 10px 2px 10px; background: var(--gold); color: #211e17; }
+.chat-action-link { display: inline-flex; margin: 7px 2px 0; color: var(--gold); font-size: 9px; font-weight: 700; }
+.chat-action-link:hover { text-decoration: underline; }
 .typing { display: flex; gap: 4px; padding: 13px; }
 .typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); animation: typing .8s infinite ease-in-out; }
 .typing i:nth-child(2) { animation-delay: .13s; }
@@ -256,6 +260,44 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .about-detail strong { color: var(--ink); font-size: 10px; font-weight: 500; }
 .about-card .about-admin-note { margin-top: 20px; color: var(--gold); font-size: 9px; }
 
+/* Reservation */
+.reservation-layout { display: grid; grid-template-columns: .8fr 1fr; align-items: start; gap: 54px; padding-block: 55px; }
+.reservation-intro h1 { font-size: clamp(42px, 5vw, 61px); }
+.reservation-intro > p { max-width: 430px; }
+.reservation-hours, .reservation-privacy { display: flex; align-items: flex-start; gap: 10px; max-width: 420px; margin-top: 26px; color: var(--gold); }
+.reservation-hours span, .reservation-privacy span { color: var(--muted); font-size: 10px; line-height: 1.7; }
+.reservation-hours b { color: var(--ink); font-size: 11px; }
+.reservation-privacy { margin-top: 17px; }
+.reservation-card { display: flex; flex-direction: column; gap: 16px; padding: 24px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+.reservation-card-heading { display: flex; align-items: center; gap: 11px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.reservation-icon { display: grid; width: 38px; height: 38px; place-items: center; color: var(--gold); background: var(--gold-soft); border-radius: 50%; }
+.reservation-card-heading strong, .reservation-card-heading small { display: block; }
+.reservation-card-heading strong { font-family: Georgia, serif; font-size: 18px; font-weight: 500; }
+.reservation-card-heading small { margin-top: 4px; color: var(--muted); font-size: 9px; }
+.reservation-notice, .reservation-status { display: flex; align-items: flex-start; gap: 9px; padding: 11px; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font-size: 9px; line-height: 1.65; }
+.reservation-notice svg, .reservation-status svg { flex: 0 0 auto; color: var(--gold); }
+.reservation-status.success { border-color: #5b9669; }
+.reservation-status.success svg { color: #5b9669; }
+.reservation-status.error { border-color: #c36c5b; }
+.reservation-status.error svg { color: #c36c5b; }
+.reservation-field { display: flex; flex-direction: column; gap: 7px; color: var(--ink); font-size: 10px; font-weight: 600; }
+.reservation-field input, .reservation-field select, .other-date-input { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid var(--line); border-radius: 3px; background: var(--page); color: var(--ink); font-size: 11px; }
+.reservation-field select:disabled { color: var(--muted); opacity: .7; }
+.reservation-fieldset { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0; border: 0; }
+.reservation-fieldset legend { margin-bottom: 9px; color: var(--ink); font-size: 10px; font-weight: 600; }
+.date-choice-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.date-choice { display: flex; min-height: 60px; flex-direction: column; justify-content: center; gap: 5px; padding: 8px; border: 1px solid var(--line); background: var(--page); color: var(--ink); text-align: left; cursor: pointer; }
+.date-choice.selected { border-color: var(--gold); background: var(--gold-soft); }
+.date-choice small { color: var(--muted); font-size: 8px; letter-spacing: .08em; }
+.date-choice strong { font-size: 11px; font-weight: 600; }
+.other-date-input { margin-top: 3px; }
+.field-hint { color: var(--muted); font-size: 8px; font-weight: 400; line-height: 1.6; }
+.reservation-consent { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: 9px; line-height: 1.65; }
+.reservation-consent input { flex: 0 0 auto; margin: 2px 0 0; accent-color: var(--gold); }
+.reservation-submit { width: 100%; }
+.reservation-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.reservation-pending-note { margin: -5px 0 0; color: var(--muted); font-size: 8px; line-height: 1.6; text-align: center; }
+
 /* Footer */
 .site-footer { border-top: 1px solid var(--line); background: var(--surface); }
 .footer-inner { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
@@ -307,6 +349,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .product-category-grid { grid-template-columns: repeat(2, 1fr); }
   .service-card { min-height: 190px; }
   .cta-banner { align-items: flex-start; flex-direction: column; margin-block: 50px; padding: 27px 23px; }
+  .cta-actions { flex-direction: column; align-items: stretch; width: 100%; }
   .cta-copy h2 { font-size: 25px; }
   .chat-page-grid { grid-template-columns: 1fr; gap: 27px; padding-block: 47px; }
   .chat-intro h1 { font-size: 43px; }
@@ -321,6 +364,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .location-visual { height: 180px; }
   .distance-card { padding: 19px; }
   .about-layout { grid-template-columns: 1fr; gap: 30px; padding-block: 47px; }
+  .reservation-layout { grid-template-columns: 1fr; gap: 28px; padding-block: 42px; }
+  .reservation-intro h1 { font-size: 45px; }
+  .reservation-card { padding: 18px; }
   .about-layout .page-intro h1 { font-size: 46px; }
   .about-card { padding: 23px; }
   .footer-inner { align-items: flex-start; flex-direction: column; padding-block: 20px; gap: 12px; }

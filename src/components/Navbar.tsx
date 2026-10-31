@@ -9,6 +9,7 @@ const links = [
   ['/', 'Beranda'],
   ['/chat', 'Chatbot'],
   ['/layanan', 'Layanan'],
+  ['/reservasi', 'Reservasi'],
   ['/lokasi', 'Lokasi'],
   ['/tentang', 'Tentang'],
 ];
