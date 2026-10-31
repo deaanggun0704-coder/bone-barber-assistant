@@ -46,7 +46,7 @@ export const faq: FaqEntry[] = [
   {
     intent: 'booking',
     keywords: ['reservasi', 'booking', 'pesan jadwal', 'buat janji', 'appointment', 'antrian'],
-    answer: 'Untuk mengajukan reservasi, isi formulir di halaman Reservasi dengan nama, nomor WhatsApp/HP, layanan, tanggal, dan jam. Permintaan akan menunggu konfirmasi admin/kasir.',
+    answer: 'Untuk reservasi, siapkan nama, nomor WhatsApp, layanan yang diinginkan, tanggal, dan jam. Sampaikan langsung kepada admin/kasir melalui kontak resmi Bone Barber Shop atau saat datang ke barbershop, lalu tunggu konfirmasi jadwal. Chatbot ini hanya memberi panduan dan belum dapat mencatat atau mengirim reservasi, jadi pesan di sini belum menjadi booking.',
   },
   {
     intent: 'contact',
