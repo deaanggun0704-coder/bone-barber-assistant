@@ -32,12 +32,21 @@ describe('getFaqAnswer', () => {
     expect(answer).toContain('harga jual, dan stok');
   });
 
-  it('explains how to request a reservation and clarifies that chat messages are not bookings', () => {
+  it('offers the reservation page without claiming that the requested time is available', () => {
     const answer = getFaqAnswer('bagaimana cara reservasi?');
-    expect(answer).toContain('nama, nomor WhatsApp, layanan yang diinginkan, tanggal, dan jam');
-    expect(answer).toContain('admin/kasir');
-    expect(answer).toContain('belum dapat mencatat atau mengirim reservasi');
-    expect(answer).toContain('pesan di sini belum menjadi booking');
+    expect(answer).toContain('halaman Reservasi');
+    expect(answer).toContain('mengonfirmasi melalui WhatsApp');
+    expect(answer).toContain('belum menjamin slot tersedia');
+  });
+
+  it.each([
+    'Saya mau booking.',
+    'Mau reservasi.',
+    'Bisa pesan tempat?',
+    'Bagaimana cara booking?',
+    'Saya ingin potong rambut besok.',
+  ])('offers the reservation page for booking intent: %s', (question) => {
+    expect(getFaqAnswer(question)).toContain('halaman Reservasi');
   });
 
   it('does not answer an empty question as if it were an FAQ match', () => {

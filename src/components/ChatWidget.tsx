@@ -68,7 +68,7 @@ export function ChatWidget() {
             {message.sender === 'bot' && <span className="message-avatar"><Bot size={14} /></span>}
             <div className="message-content">
               <p className="message-bubble">{message.text}</p>
-              {message.sender === 'bot' && message.text.includes('halaman Reservasi') && <Link className="chat-action-link" to="/reservasi">Isi formulir reservasi</Link>}
+              {message.sender === 'bot' && message.text.includes('halaman Reservasi') && <Link className="chat-action-link" to="/reservasi">Ajukan Reservasi</Link>}
             </div>
           </div>
         ))}

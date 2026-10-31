@@ -1,6 +1,7 @@
 import { ArrowDownRight, ArrowRight, BadgeCheck, Clock3, MapPin, MessageCircle, Scissors, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { shop } from '../data/shop';
+import { businessConfig } from '../data/businessConfig';
 import { ServiceCard } from '../components/ServiceCard';
 
 export function HomePage() {
@@ -35,7 +36,7 @@ export function HomePage() {
 
         <section className="container info-strip" aria-label="Informasi barbershop">
           <div className="info-item"><span className="info-icon"><MapPin size={18} /></span><span><small>KUNJUNGI KAMI</small><strong>Bone Barber Shop · Cirebon</strong></span></div>
-          <div className="info-item"><span className="info-icon"><Clock3 size={18} /></span><span><small>JAM OPERASIONAL</small><strong>{shop.openingHours}</strong></span></div>
+          <div className="info-item"><span className="info-icon"><Clock3 size={18} /></span><span><small>JAM OPERASIONAL</small><strong>{businessConfig.openingHoursLabel}</strong></span></div>
           <div className="info-item info-action"><Link to="/lokasi">Temukan lokasi <ArrowRight size={15} /></Link></div>
         </section>
 

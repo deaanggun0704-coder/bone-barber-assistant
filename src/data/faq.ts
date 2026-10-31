@@ -1,4 +1,5 @@
 import { shop } from './shop';
+import { businessConfig } from './businessConfig';
 
 export type FaqEntry = {
   intent: string;
@@ -31,7 +32,7 @@ export const faq: FaqEntry[] = [
   {
     intent: 'hours',
     keywords: ['jam buka', 'jam operasional', 'buka pukul', 'tutup pukul', 'operasional'],
-    answer: `Jam operasional: ${shop.openingHours}.`,
+    answer: `Jam operasional: ${businessConfig.openingHoursLabel}.`,
   },
   {
     intent: 'services',
@@ -45,13 +46,17 @@ export const faq: FaqEntry[] = [
   },
   {
     intent: 'booking',
-    keywords: ['reservasi', 'booking', 'pesan jadwal', 'buat janji', 'appointment', 'antrian'],
-    answer: 'Untuk reservasi, siapkan nama, nomor WhatsApp, layanan yang diinginkan, tanggal, dan jam. Sampaikan langsung kepada admin/kasir melalui kontak resmi Bone Barber Shop atau saat datang ke barbershop, lalu tunggu konfirmasi jadwal. Chatbot ini hanya memberi panduan dan belum dapat mencatat atau mengirim reservasi, jadi pesan di sini belum menjadi booking.',
+    keywords: [
+      'reservasi', 'booking', 'pesan jadwal', 'buat janji', 'appointment', 'antrian',
+      'mau booking', 'mau reservasi', 'bisa pesan tempat', 'cara booking',
+      'ingin potong rambut besok',
+    ],
+    answer: 'Anda dapat mengajukan reservasi melalui halaman Reservasi. Isi layanan, tanggal, dan jam pilihan; admin akan memeriksa jadwal dan mengonfirmasi melalui WhatsApp. Waktu yang diajukan belum menjamin slot tersedia.',
   },
   {
     intent: 'contact',
     keywords: ['kontak', 'hubungi bone', 'whatsapp', 'telepon', 'nomor admin'],
-    answer: `Kontak Bone Barber Shop: ${shop.whatsapp}.`,
+    answer: `Kontak WhatsApp Bone Barber Shop: ${businessConfig.adminWhatsApp || 'Perlu diisi admin'}.`,
   },
   {
     intent: 'products',
@@ -80,6 +85,13 @@ function normalizeText(value: string): string {
 export function getFaqAnswer(question: string): string {
   const normalized = normalizeText(question);
   if (!normalized) return unknown;
+  const booking = faq.find((entry) => entry.intent === 'booking');
+  if (booking && (
+    /\b(?:mau|ingin|pengen|bisa|boleh)\b.*\b(?:booking|reservasi|pesan(?: tempat)?|potong rambut)\b/.test(normalized)
+    || /\b(?:cara|bagaimana|gimana)\b.*\b(?:booking|reservasi)\b/.test(normalized)
+  )) {
+    return booking.answer;
+  }
 
   const ranked = faq
     .map((entry) => ({

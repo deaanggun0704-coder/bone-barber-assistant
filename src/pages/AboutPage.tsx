@@ -1,6 +1,7 @@
 import { BadgeInfo, MapPin, MessageCircle, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { shop } from '../data/shop';
+import { businessConfig } from '../data/businessConfig';
 
 export function AboutPage() {
   return (
@@ -17,7 +18,7 @@ export function AboutPage() {
           <p>Chatbot ini hanya memberikan informasi seputar Bone Barber Shop. Jawaban berasal dari FAQ lokal, bukan pencarian internet atau model generatif.</p>
           <div className="about-divider" />
           <div className="about-detail"><MapPin size={17} /><span><small>ALAMAT</small><strong>{shop.address}</strong></span></div>
-          <div className="about-detail"><MessageCircle size={17} /><span><small>KONTAK / WHATSAPP</small><strong>{shop.whatsapp}</strong></span></div>
+          <div className="about-detail"><MessageCircle size={17} /><span><small>KONTAK / WHATSAPP</small><strong>{businessConfig.adminWhatsApp || 'Perlu diisi admin'}</strong></span></div>
           <p className="about-admin-note">Informasi operasional yang belum tersedia perlu diisi admin.</p>
         </div>
       </div>

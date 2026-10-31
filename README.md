@@ -23,29 +23,28 @@ npm run preview
 
 ## Mengisi data usaha
 
-Edit `src/data/shop.ts` untuk alamat, tautan Google Maps, koordinat toko yang diverifikasi, layanan/harga, jam operasional, telepon, WhatsApp, kategori retail, dan metode pembayaran. Jam operasional yang tercatat: Senin–Sabtu 09.00–20.00; Minggu 10.00–20.00. Harga serta durasi layanan saat ini disalin dari data bawaan SQL sistem operasional dan ditandai perlu dikonfirmasi admin; verifikasi sebelum menganggapnya sebagai harga berlaku. Kategori retail bukan jaminan stok tersedia; nama/merek, harga jual, dan stok harus dilengkapi admin. Jangan memasukkan koordinat perkiraan. Edit `src/data/faq.ts` untuk menambahkan FAQ dan kata kunci.
+Edit `src/data/shop.ts` untuk alamat, tautan Google Maps, koordinat toko yang diverifikasi, layanan/harga, kategori retail, dan metode pembayaran. Jam operasional, nomor admin WhatsApp, layanan untuk reservasi, dan daftar barber dikonfigurasi di `src/data/businessConfig.ts`. Harga serta durasi layanan saat ini disalin dari data bawaan SQL sistem operasional dan ditandai perlu dikonfirmasi admin; verifikasi sebelum menganggapnya sebagai harga berlaku. Kategori retail bukan jaminan stok tersedia; nama/merek, harga jual, dan stok harus dilengkapi admin. Jangan memasukkan koordinat perkiraan. Edit `src/data/faq.ts` untuk menambahkan FAQ dan kata kunci.
 
 Alamat rumah berupa teks tidak otomatis diubah menjadi koordinat. Form manual menerima latitude dan longitude, tanpa layanan geocoding. Koordinat pengguna hanya berada di memori halaman; Local Storage dipakai hanya untuk preferensi tema.
 
-## Reservasi online
+## Pengajuan reservasi melalui WhatsApp
 
-Form reservasi ada di `/reservasi`. Form meminta nama, nomor WhatsApp/HP, layanan aktif, tanggal (hari ini, besok, atau tanggal pilihan), jam, dan persetujuan pemrosesan data. Sumber endpoint PHP adalah `integration/php/public-booking.php`; tempatkan salinannya sebagai `api/public-booking.php` pada root situs PHP operasional (folder `api` sudah disiapkan untuk pengujian lokal). Endpoint mengambil daftar layanan aktif langsung dari database operasional, membuat/mencari data pelanggan berdasarkan nomor HP, lalu menambahkan booking dengan status `menunggu` dan barber belum ditentukan. Admin/kasir harus memeriksa jadwal dan mengonfirmasi; ketersediaan slot tidak dikunci otomatis.
+Halaman `/reservasi` memvalidasi nama, nomor pelanggan (opsional), layanan, tanggal, jam operasional, serta durasi layanan sebelum menampilkan ringkasan. Tanggal dan jam mengikuti zona waktu `Asia/Jakarta`. Jadwal hanya divalidasi terhadap jam operasional; situs tidak memeriksa ketersediaan barber atau slot. Admin tetap harus mengonfirmasi permintaan.
 
-Endpoint PHP memerlukan PHP 8.1+ dengan PDO MySQL dan memakai database yang sudah dikonfigurasi untuk situs operasional. Untuk tes lokal, nyalakan Apache/MySQL XAMPP, akses endpoint lewat `http://localhost/webbarbershop/api/public-booking.php`, dan jalankan Vite pada `http://localhost:5173`. Endpoint hanya mengizinkan origin Vercel production dan Vite localhost secara default; atur `BOOKING_ALLOWED_ORIGINS` pada server PHP jika domain berubah. Endpoint menerapkan validasi server, honeypot, rate limit 5 pengiriman per 10 menit per alamat IP, aturan jam operasional, dan batas akhir layanan.
-
-**Integrasi publik belum aktif sampai situs PHP/MySQL admin di-host dengan HTTPS.** `localhost` hanya dapat diakses dari komputer yang sama. Setelah endpoint memperoleh URL publik HTTPS, atur `VITE_BOOKING_API_URL` pada Environment Variables Vercel ke URL endpoint penuh (misalnya `https://domain-admin.example/api/public-booking.php`), lalu redeploy. Jangan mengisi URL localhost di Vercel dan jangan menaruh secret di variabel `VITE_*`. Tanpa konfigurasi API, formulir menampilkan bahwa pengiriman online belum tersedia dan tidak berpura-pura menyimpan reservasi.
+Konfigurasi lokal ada di `src/data/businessConfig.ts`. Nomor WhatsApp admin Bone Barber Shop disimpan dalam format internasional dengan kode negara, tanpa tanda `+` atau spasi. `barbers` kosong sampai ada daftar barber terverifikasi. Layanan dan jam usaha diambil dari data toko lokal; verifikasi perubahan jadwal sebelum mengubah konfigurasi. Pesan hanya diteruskan ke WhatsApp saat pelanggan memilih tombol kirim; situs tidak dapat memastikan pesan telah terkirim atau reservasi diterima. Formulir tidak menyimpan data reservasi di browser atau mengirimkannya ke backend.
 
 ## Struktur
 
 ```text
 src/
-  components/   Navbar, footer, chatbot, kalkulator jarak, kartu layanan
-  data/          Data toko dan FAQ lokal
+  components/   Navbar, footer, chatbot, kalkulator jarak, kartu layanan, form/ringkasan reservasi
+  data/          Data toko, konfigurasi usaha, dan FAQ lokal
   hooks/         Preferensi tema
   pages/         Beranda, chatbot, layanan, reservasi, lokasi, tentang
   styles/        Tema dan gaya responsif
-  utils/         Pencocokan FAQ dan Haversine
-integration/php/ Endpoint reservasi publik untuk ditempatkan pada hosting admin PHP
+  types/         Tipe data reservasi
+  utils/         Pencocokan FAQ, Haversine, validasi reservasi, dan URL WhatsApp
+integration/php/ Integrasi PHP operasional yang terpisah dari alur reservasi WhatsApp situs ini
 ```
 
 ## Deploy ke GitHub dan Vercel

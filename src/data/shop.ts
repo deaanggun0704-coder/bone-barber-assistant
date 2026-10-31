@@ -8,9 +8,6 @@ export const shop = {
   mapsUrl: 'https://maps.app.goo.gl/qwCqZDL1PW3LpYA98?g_st=ic',
   // Isi hanya setelah koordinat toko dikonfirmasi dan diverifikasi admin.
   coordinates: null as Coordinate | null,
-  openingHours: 'Senin–Sabtu: 09.00–20.00; Minggu: 10.00–20.00',
-  phone: 'Perlu diisi admin',
-  whatsapp: 'Perlu diisi admin',
   productCategories: [
     { name: 'Pomade', description: 'Produk styling rambut berbahan dasar minyak atau air.' },
     { name: 'Shampoo', description: 'Produk perawatan rambut dan kulit kepala.' },
