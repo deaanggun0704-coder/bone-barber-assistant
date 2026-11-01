@@ -26,10 +26,13 @@ describe('getFaqAnswer', () => {
     expect(answer).toContain('belum dikonfirmasi admin');
   });
 
-  it('lists product categories without inventing retail prices or stock', () => {
+  it('lists the interviewed product prices and stock', () => {
     const answer = getFaqAnswer('produk apa yang dijual?');
-    expect(answer).toContain('Pomade');
-    expect(answer).toContain('harga jual, dan stok');
+    expect(answer).toContain('Serum Rambut (Rp40.000, stok 50 pcs)');
+    expect(answer).toContain('Hair Tonik (Rp25.000, stok 50 pcs)');
+    expect(answer).toContain('Dust / Hair Powder (Rp35.000, stok 50 pcs)');
+    expect(answer).toContain('Pomade 120gr (Rp50.000, stok 25 pcs)');
+    expect(answer).toContain('Pomade 100gr (Rp40.000, stok 25 pcs)');
   });
 
   it('offers the reservation page without claiming that the requested time is available', () => {

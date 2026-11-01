@@ -45,8 +45,8 @@ export function ReservationForm({ value, errors, status, onChange, onSubmit }: P
         {error('name')}
       </label>
 
-      <label className="reservation-field" htmlFor="reservation-phone">Nomor WhatsApp pelanggan <span className="optional-label">(opsional)</span>
-        <input id="reservation-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" maxLength={reservationLimits.phone} value={value.phone} onChange={update('phone')} placeholder="Contoh: 081234567890" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? 'reservation-phone-error' : undefined} />
+      <label className="reservation-field" htmlFor="reservation-phone">Nomor WhatsApp pelanggan <span aria-hidden="true">*</span>
+        <input id="reservation-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" maxLength={reservationLimits.phone} required value={value.phone} onChange={update('phone')} placeholder="Contoh: 081234567890" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? 'reservation-phone-error' : undefined} />
         {error('phone')}
       </label>
 
@@ -90,8 +90,8 @@ export function ReservationForm({ value, errors, status, onChange, onSubmit }: P
       </label>
 
       {Object.keys(errors).length > 0 && <p className="reservation-error-summary" role="alert">Periksa kembali data yang ditandai sebelum melanjutkan.</p>}
-      <button className="button button-gold reservation-submit" type="submit">Lihat Ringkasan <span aria-hidden="true">→</span></button>
-      <p className="reservation-pending-note">Permintaan belum otomatis diterima. Admin perlu memeriksa jadwal dan mengonfirmasi melalui WhatsApp.</p>
+      <button className="button button-gold reservation-submit" type="submit">Lanjut ke WhatsApp <span aria-hidden="true">→</span></button>
+      <p className="reservation-pending-note">WhatsApp akan terbuka dengan draf pesan. Tekan Kirim di WhatsApp agar permintaan diteruskan; admin akan mengonfirmasi ketersediaan jadwal.</p>
     </form>
   );
 }

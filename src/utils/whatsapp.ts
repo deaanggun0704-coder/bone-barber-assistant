@@ -22,3 +22,17 @@ export function createReservationWhatsAppUrl(adminNumber: string, reservation: R
 
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
+
+export function createProductInquiryWhatsAppUrl(adminNumber: string, productName: string): string | null {
+  const number = adminNumber.replace(/\D/g, '');
+  if (!/^\d{8,15}$/.test(number)) return null;
+
+  const message = [
+    'Halo Admin Bone Barber Shop, saya ingin bertanya tentang ketersediaan produk.',
+    '',
+    `Produk: ${productName}`,
+    'Mohon konfirmasi stok terbaru. Terima kasih.',
+  ].join('\n');
+
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}

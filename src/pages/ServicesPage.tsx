@@ -17,18 +17,18 @@ export function ServicesPage() {
           <div className="product-section-heading">
             <div className="section-eyebrow">PRODUK RETAIL</div>
             <h2>Perawatan untuk di rumah.</h2>
-            <p>Kategori yang tercatat dalam sistem inventaris barbershop.</p>
+            <p>Produk, harga jual, dan stok berdasarkan wawancara langsung.</p>
           </div>
           <div className="product-category-grid">
-            {shop.productCategories.map((category, index) => (
-              <article className="product-category-card" key={category.name}>
+            {shop.products.map((product, index) => (
+              <article className="product-category-card" key={product.name}>
                 <span className="service-number">0{index + 1}</span>
-                <h3>{category.name}</h3>
-                <p>{category.description}</p>
+                <h3>{product.name}</h3>
+                <p>{product.price} · Stok {product.stock} {product.unit}</p>
               </article>
             ))}
           </div>
-          <p className="admin-note">Nama/merek produk, harga jual, dan stok belum tercantum pada data yang tersedia. Kategori tidak memastikan produk sedang tersedia; konfirmasi kepada admin.</p>
+          <p className="admin-note">Stok dapat berubah mengikuti penjualan. Hubungi admin untuk memastikan ketersediaan terbaru.</p>
         </section>
       </div>
     </main>

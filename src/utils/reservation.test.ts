@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { ReservationSummary } from '../components/reservation/ReservationSummary';
 import { businessConfig } from '../data/businessConfig';
+import { shop } from '../data/shop';
 import type { ReservationDraft } from '../types/reservation';
 import {
   formatReservationDate,
@@ -10,7 +11,7 @@ import {
   getJakartaDateTime,
   validateReservation,
 } from './reservation';
-import { createReservationWhatsAppUrl } from './whatsapp';
+import { createProductInquiryWhatsAppUrl, createReservationWhatsAppUrl } from './whatsapp';
 
 const now = new Date('2026-10-31T02:00:00.000Z');
 const validDraft: ReservationDraft = {
@@ -32,8 +33,9 @@ describe('reservation validation', () => {
     expect(errors.time).toBeDefined();
   });
 
-  it('allows an omitted phone number and rejects an invalid supplied number', () => {
-    expect(validateReservation(validDraft, now).phone).toBeUndefined();
+  it('requires a phone number and rejects an invalid supplied number', () => {
+    expect(validateReservation(validDraft, now).phone).toBe('Nomor WhatsApp wajib diisi.');
+    expect(validateReservation({ ...validDraft, phone: '081234567890' }, now).phone).toBeUndefined();
     expect(validateReservation({ ...validDraft, phone: '123abc' }, now).phone).toContain('nomor WhatsApp yang valid');
   });
 
@@ -80,11 +82,11 @@ describe('reservation summary and WhatsApp link', () => {
   });
 
   it('creates an encoded wa.me URL with the requested message fields', () => {
-    const url = createReservationWhatsAppUrl('+62 857-2003-5406', validDraft);
+    const url = createReservationWhatsAppUrl('+62 857-2003-5403', validDraft);
     if (!url) throw new Error('Configured admin number should create a WhatsApp URL.');
     const parsed = new URL(url);
     expect(parsed.origin).toBe('https://wa.me');
-    expect(parsed.pathname).toBe('/6285720035406');
+    expect(parsed.pathname).toBe('/6285720035403');
     const message = parsed.searchParams.get('text') ?? '';
     expect(message).toContain('Halo Admin Bone Barber Shop 👋');
     expect(message).toContain('Nama: Andi');
@@ -95,5 +97,25 @@ describe('reservation summary and WhatsApp link', () => {
   it('does not make a WhatsApp link for an unconfigured admin number', () => {
     expect(createReservationWhatsAppUrl('', validDraft)).toBeNull();
     expect(createReservationWhatsAppUrl('Perlu diisi admin', validDraft)).toBeNull();
+  });
+
+  it('creates an HTTPS WhatsApp product inquiry with its selected category', () => {
+    const url = createProductInquiryWhatsAppUrl(businessConfig.adminWhatsApp, 'Pomade 120gr');
+    if (!url) throw new Error('Configured admin number should create a WhatsApp URL.');
+    const parsed = new URL(url);
+    expect(parsed.origin).toBe('https://wa.me');
+    expect(parsed.pathname).toBe('/6285720035403');
+    expect(parsed.searchParams.get('text')).toContain('Produk: Pomade 120gr');
+    expect(createProductInquiryWhatsAppUrl('', 'Pomade')).toBeNull();
+  });
+
+  it('keeps the interviewed product prices and stock in the catalog', () => {
+    expect(shop.products).toEqual([
+      { name: 'Serum Rambut', price: 'Rp40.000', stock: 50, unit: 'pcs' },
+      { name: 'Hair Tonik', price: 'Rp25.000', stock: 50, unit: 'pcs' },
+      { name: 'Dust / Hair Powder', price: 'Rp35.000', stock: 50, unit: 'pcs' },
+      { name: 'Pomade 120gr', price: 'Rp50.000', stock: 25, unit: 'pcs' },
+      { name: 'Pomade 100gr', price: 'Rp40.000', stock: 25, unit: 'pcs' },
+    ]);
   });
 });

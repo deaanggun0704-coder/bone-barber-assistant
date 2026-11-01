@@ -2,7 +2,13 @@ import { ExternalLink, LocateFixed, MapPin, Navigation } from 'lucide-react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { shop, type Coordinate } from '../data/shop';
-import { haversineDistanceKm } from '../utils/distance';
+import { createGoogleMapsDirectionsUrl, haversineDistanceKm, type TravelMode } from '../utils/distance';
+
+const travelModes: { mode: TravelMode; label: string }[] = [
+  { mode: 'driving', label: 'Kendaraan bermotor (mobil/motor)' },
+  { mode: 'walking', label: 'Jalan kaki' },
+  { mode: 'bicycling', label: 'Bersepeda' },
+];
 
 type InputFieldProps = { label: string; value: string; onChange: (value: string) => void };
 function CoordinateField({ label, value, onChange }: InputFieldProps) {
@@ -12,12 +18,14 @@ function CoordinateField({ label, value, onChange }: InputFieldProps) {
 export function DistanceCalculator() {
   const [permissionMessage, setPermissionMessage] = useState('');
   const [result, setResult] = useState<number | null>(null);
+  const [origin, setOrigin] = useState<Coordinate | null>(null);
   const [manualLat, setManualLat] = useState('');
   const [manualLon, setManualLon] = useState('');
   function calculate(origin: Coordinate) {
+    setOrigin(origin);
     if (!shop.coordinates) {
       setResult(null);
-      setPermissionMessage('Koordinat Bone Barber Shop belum diverifikasi admin. Kalkulasi jarak belum tersedia.');
+      setPermissionMessage('Koordinat Bone Barber Shop belum diverifikasi, jadi jarak garis lurus belum dapat dihitung. Anda tetap dapat melihat rute, jarak perjalanan, dan estimasi waktu di Google Maps.');
       return;
     }
     try {
@@ -31,12 +39,12 @@ export function DistanceCalculator() {
 
   function requestLocation() {
     setResult(null);
+    setOrigin(null);
     if (!shop.coordinates) {
-      setPermissionMessage('Koordinat Bone Barber Shop belum diverifikasi admin. Kalkulasi jarak belum tersedia, jadi lokasi Anda tidak diperlukan.');
-      return;
+      setPermissionMessage('Koordinat Bone Barber Shop belum diverifikasi. Izinkan lokasi agar Google Maps dapat menampilkan rute, jarak perjalanan, dan estimasi waktu.');
     }
     if (!navigator.geolocation) {
-      setPermissionMessage('Browser ini tidak mendukung fitur lokasi. Anda dapat memasukkan koordinat secara manual.');
+      setPermissionMessage('Browser ini tidak mendukung fitur lokasi. Masukkan koordinat secara manual untuk membuka rute Google Maps.');
       return;
     }
     setPermissionMessage('Meminta izin lokasi dari browser…');
@@ -58,6 +66,7 @@ export function DistanceCalculator() {
 
   function submitManual(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setOrigin(null);
     const lat = Number(manualLat);
     const lon = Number(manualLon);
     if (!manualLat.trim() || !manualLon.trim() || !Number.isFinite(lat) || !Number.isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
@@ -81,9 +90,25 @@ export function DistanceCalculator() {
         <button className="button button-gold calculate-button" type="submit">Hitung jarak</button>
       </form>
       {permissionMessage && <p className="status-message" role="status">{permissionMessage}</p>}
-      {result !== null && <div className="distance-result" role="status"><span>Jarak garis lurus</span><strong>{result.toFixed(2)} <small>km</small></strong></div>}
+      {result !== null && <div className="distance-result" role="status"><span>Jarak garis lurus (bukan jarak rute)</span><strong>{result.toFixed(2)} <small>km</small></strong></div>}
+      {origin && (
+        <div className="distance-route-list" aria-label="Rute dan estimasi perjalanan">
+          <strong>Jarak rute dan estimasi waktu perjalanan:</strong>
+          {travelModes.map(({ mode, label }) => (
+            <a
+              className="map-link"
+              href={createGoogleMapsDirectionsUrl(origin, `${shop.name}, ${shop.address}`, mode)}
+              target="_blank"
+              rel="noreferrer"
+              key={mode}
+            >
+              {label} · Lihat jarak & waktu di Google Maps <ExternalLink size={15} />
+            </a>
+          ))}
+        </div>
+      )}
       <div className="destination-row"><MapPin size={16} /><span><b>Tujuan</b><br />{shop.address}</span></div>
-      <p className="distance-note">Jarak garis lurus berbeda dengan jarak perjalanan melalui jalan. Alamat teks belum dapat digunakan untuk kalkulasi; diperlukan koordinat.</p>
+      <p className="distance-note">Jarak rute dan waktu perjalanan mengikuti kondisi serta pilihan moda di Google Maps. Lokasi Anda hanya digunakan di browser untuk membuat tautan rute dan tidak disimpan oleh situs. Jarak garis lurus hanya ditampilkan setelah koordinat toko diverifikasi.</p>
       <a className="map-link" href={shop.mapsUrl} target="_blank" rel="noreferrer">Lihat lokasi di Google Maps <ExternalLink size={15} /></a>
     </section>
   );

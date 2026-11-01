@@ -1,42 +1,125 @@
 import { ArrowUp, Bot, RotateCcw, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { businessConfig } from '../data/businessConfig';
 import { getFaqAnswer } from '../data/faq';
+import { shop } from '../data/shop';
+import { createProductInquiryWhatsAppUrl } from '../utils/whatsapp';
 
-type Message = { id: number; sender: 'bot' | 'user'; text: string };
+type ChatOption = { kind: 'service' | 'product'; value: string; label: string };
+type Message = {
+  id: number;
+  sender: 'bot' | 'user';
+  text: string;
+  options?: ChatOption[];
+  action?: { label: string; href: string; external?: boolean };
+};
 const welcome = 'Halo! Saya Bone Barber Assistant. Saya siap membantu informasi layanan, harga, reservasi, dan lokasi Bone Barber Shop.';
-const quickReplies = ['Daftar layanan', 'Harga potong rambut', 'Jam buka', 'Lokasi kami', 'Cara reservasi', 'Hitung jarak'];
+const quickReplies = ['Pilih potong rambut', 'Pilih produk', 'Daftar layanan', 'Jam buka', 'Lokasi kami', 'Cara reservasi'];
 const maxLength = 500;
+
+function getBotReply(text: string): Omit<Message, 'id' | 'sender'> {
+  if (text.trim().toLocaleLowerCase('id-ID') === 'pilih potong rambut') {
+    return {
+      text: 'Pilih layanan potong rambut atau perawatan yang Anda inginkan:',
+      options: shop.services.map((service) => ({
+        kind: 'service',
+        value: service.name,
+        label: `${service.name} · ${service.price}`,
+      })),
+    };
+  }
+  if (text.trim().toLocaleLowerCase('id-ID') === 'pilih produk') {
+    return {
+      text: 'Berikut produk, harga jual, dan stok berdasarkan wawancara langsung:',
+      options: shop.products.map((product) => ({
+        kind: 'product',
+        value: product.name,
+        label: `${product.name} · ${product.price} · Stok ${product.stock} ${product.unit}`,
+      })),
+    };
+  }
+  return { text: getFaqAnswer(text) };
+}
 
 export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([{ id: 1, sender: 'bot', text: welcome }]);
   const [input, setInput] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(2);
   const responseTimeout = useRef<number | null>(null);
+  const reservationConfirmationShown = useRef(false);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, processing]);
 
+  useEffect(() => {
+    if (searchParams.get('reservation') !== 'prepared' || reservationConfirmationShown.current) return;
+    reservationConfirmationShown.current = true;
+    setMessages((current) => [...current, {
+      id: nextId.current++,
+      sender: 'bot',
+      text: 'Formulir reservasi sudah valid dan draf WhatsApp telah dibuka. Silakan periksa lalu tekan Kirim di WhatsApp agar permintaan diteruskan ke admin. Ini belum berarti jadwal disetujui; admin akan mengonfirmasi ketersediaannya.',
+    }]);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.delete('reservation');
+      return next;
+    }, { replace: true });
+  }, [searchParams, setSearchParams]);
+
   useEffect(() => () => {
     if (responseTimeout.current !== null) window.clearTimeout(responseTimeout.current);
   }, []);
+
+  function queueBotReply(reply: () => Omit<Message, 'id' | 'sender'>) {
+    setProcessing(true);
+    responseTimeout.current = window.setTimeout(() => {
+      setMessages((current) => [...current, { id: nextId.current++, sender: 'bot', ...reply() }]);
+      setProcessing(false);
+      responseTimeout.current = null;
+    }, 350);
+  }
 
   function sendMessage(raw: string) {
     const text = raw.trim();
     if (!text || text.length > maxLength || processing) return;
     setInput('');
     setMessages((current) => [...current, { id: nextId.current++, sender: 'user', text }]);
-    setProcessing(true);
-    responseTimeout.current = window.setTimeout(() => {
-      const answer = getFaqAnswer(text);
-      setMessages((current) => [...current, { id: nextId.current++, sender: 'bot', text: answer }]);
-      setProcessing(false);
-      responseTimeout.current = null;
-    }, 350);
+    queueBotReply(() => {
+      const reply = getBotReply(text);
+      if (reply.text.includes('halaman Reservasi')) {
+        return { ...reply, action: { label: 'Isi formulir reservasi', href: '/reservasi' } };
+      }
+      return reply;
+    });
+  }
+
+  function selectOption(option: ChatOption) {
+    if (processing) return;
+    setMessages((current) => [...current, { id: nextId.current++, sender: 'user', text: option.value }]);
+    queueBotReply(() => {
+      if (option.kind === 'service') {
+        const service = shop.services.find((item) => item.name === option.value);
+        return {
+          text: `Pilihan Anda: ${option.value}. Durasi ${service?.duration ?? 'perlu dikonfirmasi'} dengan harga acuan ${service?.price ?? 'perlu dikonfirmasi'}. Harga perlu dikonfirmasi admin. Anda dapat lanjut mengisi data reservasi; setelah formulir valid, WhatsApp akan terbuka dengan pesan yang sudah disiapkan.`,
+          action: { label: 'Isi data reservasi', href: `/reservasi?service=${encodeURIComponent(option.value)}` },
+        };
+      }
+
+      const product = shop.products.find((item) => item.name === option.value);
+      const url = createProductInquiryWhatsAppUrl(businessConfig.adminWhatsApp, option.value);
+      return {
+        text: product
+          ? `Pilihan Anda: ${product.name}. Harga jual ${product.price}; stok tercatat ${product.stock} ${product.unit}. Stok bisa berubah mengikuti penjualan.`
+          : `Produk ${option.value} tidak ditemukan di katalog.`,
+        ...(url ? { action: { label: 'Tanyakan produk via WhatsApp', href: url, external: true } } : {}),
+      };
+    });
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -68,7 +151,20 @@ export function ChatWidget() {
             {message.sender === 'bot' && <span className="message-avatar"><Bot size={14} /></span>}
             <div className="message-content">
               <p className="message-bubble">{message.text}</p>
-              {message.sender === 'bot' && message.text.includes('halaman Reservasi') && <Link className="chat-action-link" to="/reservasi">Ajukan Reservasi</Link>}
+              {message.options && (
+                <div className="chat-option-list">
+                  {message.options.map((option) => (
+                    <button className="chat-option" key={`${option.kind}-${option.value}`} onClick={() => selectOption(option)} disabled={processing}>
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {message.action && (
+                message.action.external
+                  ? <a className="chat-action-link" href={message.action.href} target="_blank" rel="noreferrer">{message.action.label}</a>
+                  : <Link className="chat-action-link" to={message.action.href}>{message.action.label}</Link>
+              )}
             </div>
           </div>
         ))}

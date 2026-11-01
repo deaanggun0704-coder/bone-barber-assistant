@@ -1,6 +1,6 @@
 export type Coordinate = { lat: number; lon: number };
 export type Service = { name: string; description: string; price: string; duration: string };
-export type ProductCategory = { name: string; description: string };
+export type Product = { name: string; price: string; stock: number; unit: string };
 
 export const shop = {
   name: 'Bone Barber Shop',
@@ -8,15 +8,13 @@ export const shop = {
   mapsUrl: 'https://maps.app.goo.gl/qwCqZDL1PW3LpYA98?g_st=ic',
   // Isi hanya setelah koordinat toko dikonfirmasi dan diverifikasi admin.
   coordinates: null as Coordinate | null,
-  productCategories: [
-    { name: 'Pomade', description: 'Produk styling rambut berbahan dasar minyak atau air.' },
-    { name: 'Shampoo', description: 'Produk perawatan rambut dan kulit kepala.' },
-    { name: 'Conditioner', description: 'Produk pelembap dan perawatan rambut.' },
-    { name: 'Wax & Clay', description: 'Produk styling rambut berbahan wax dan clay.' },
-    { name: 'Beard Care', description: 'Produk perawatan jenggot dan kumis.' },
-    { name: 'Aksesori', description: 'Kategori aksesori barbershop.' },
-    { name: 'Lainnya', description: 'Kategori produk lainnya.' },
-  ] satisfies ProductCategory[],
+  products: [
+    { name: 'Serum Rambut', price: 'Rp40.000', stock: 50, unit: 'pcs' },
+    { name: 'Hair Tonik', price: 'Rp25.000', stock: 50, unit: 'pcs' },
+    { name: 'Dust / Hair Powder', price: 'Rp35.000', stock: 50, unit: 'pcs' },
+    { name: 'Pomade 120gr', price: 'Rp50.000', stock: 25, unit: 'pcs' },
+    { name: 'Pomade 100gr', price: 'Rp40.000', stock: 25, unit: 'pcs' },
+  ] satisfies Product[],
   paymentMethods: ['Perlu diisi admin'],
   services: [
     {

@@ -70,7 +70,8 @@ export function validateReservation(draft: ReservationDraft, now = new Date()): 
   else if (name.length > reservationLimits.name) errors.name = `Nama maksimal ${reservationLimits.name} karakter.`;
 
   const phone = draft.phone.trim();
-  if (phone.length > reservationLimits.phone) errors.phone = `Nomor WhatsApp maksimal ${reservationLimits.phone} karakter.`;
+  if (!phone) errors.phone = 'Nomor WhatsApp wajib diisi.';
+  else if (phone.length > reservationLimits.phone) errors.phone = `Nomor WhatsApp maksimal ${reservationLimits.phone} karakter.`;
   else if (phone && !/^\+?\d{8,15}$/.test(phone.replace(/[\s()-]/g, ''))) {
     errors.phone = 'Masukkan nomor WhatsApp yang valid, 8–15 digit.';
   }

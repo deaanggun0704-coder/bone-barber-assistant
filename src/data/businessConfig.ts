@@ -32,7 +32,7 @@ function formatOpeningHours(): string {
 }
 
 export const businessConfig = {
-  adminWhatsApp: '6285720035406',
+  adminWhatsApp: '6285720035403',
   timezone: 'Asia/Jakarta',
   closedDays,
   openingHoursByDay,

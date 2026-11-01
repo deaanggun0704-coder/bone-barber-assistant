@@ -51,7 +51,7 @@ export const faq: FaqEntry[] = [
       'mau booking', 'mau reservasi', 'bisa pesan tempat', 'cara booking',
       'ingin potong rambut besok',
     ],
-    answer: 'Anda dapat mengajukan reservasi melalui halaman Reservasi. Isi layanan, tanggal, dan jam pilihan; admin akan memeriksa jadwal dan mengonfirmasi melalui WhatsApp. Waktu yang diajukan belum menjamin slot tersedia.',
+    answer: 'Buka halaman Reservasi untuk mengisi nama, nomor WhatsApp, layanan, tanggal, dan jam kedatangan. Setelah formulir valid, WhatsApp terbuka dengan draf permintaan; tekan Kirim agar diteruskan ke admin. Waktu yang diminta belum menjamin slot tersedia; admin akan mengonfirmasi melalui WhatsApp.',
   },
   {
     intent: 'contact',
@@ -61,7 +61,7 @@ export const faq: FaqEntry[] = [
   {
     intent: 'products',
     keywords: ['produk', 'pomade', 'wax', 'sampo', 'shampoo'],
-    answer: `Kategori produk yang tercatat di sistem: ${shop.productCategories.map((category) => category.name).join(', ')}. Nama/merek produk, harga jual, dan stok perlu dikonfirmasi admin; daftar kategori tidak memastikan stok tersedia saat ini.`,
+    answer: `Daftar produk berdasarkan wawancara langsung: ${shop.products.map((product) => `${product.name} (${product.price}, stok ${product.stock} ${product.unit})`).join('; ')}. Stok dapat berubah mengikuti penjualan; silakan konfirmasi ketersediaan terbaru kepada admin.`,
   },
   {
     intent: 'payment',
@@ -71,7 +71,7 @@ export const faq: FaqEntry[] = [
   {
     intent: 'distance',
     keywords: ['jarak', 'hitung jarak', 'seberapa jauh'],
-    answer: 'Anda dapat menghitung jarak garis lurus di halaman Lokasi. Perhitungan tersedia setelah koordinat toko diverifikasi admin.',
+    answer: 'Buka halaman Lokasi dan izinkan akses lokasi atau masukkan koordinat Anda. Dari sana Anda dapat membuka rute kendaraan bermotor, jalan kaki, atau sepeda di Google Maps untuk melihat jarak perjalanan dan estimasi waktunya. Jarak garis lurus hanya tersedia setelah koordinat toko diverifikasi.',
   },
 ];
 
