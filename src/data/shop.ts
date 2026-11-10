@@ -1,6 +1,6 @@
 export type Coordinate = { lat: number; lon: number };
 export type Service = { name: string; description: string; price: string; duration: string };
-export type Product = { name: string; price: string; stock: number; unit: string };
+export type Product = { name: string; category: string; price: string; stock: number; unit: string };
 
 export const shop = {
   name: 'Bone Barber Shop',
@@ -9,11 +9,11 @@ export const shop = {
   // Isi hanya setelah koordinat toko dikonfirmasi dan diverifikasi admin.
   coordinates: null as Coordinate | null,
   products: [
-    { name: 'Serum Rambut', price: 'Rp40.000', stock: 50, unit: 'pcs' },
-    { name: 'Hair Tonik', price: 'Rp25.000', stock: 50, unit: 'pcs' },
-    { name: 'Dust / Hair Powder', price: 'Rp35.000', stock: 50, unit: 'pcs' },
-    { name: 'Pomade 120gr', price: 'Rp50.000', stock: 25, unit: 'pcs' },
-    { name: 'Pomade 100gr', price: 'Rp40.000', stock: 25, unit: 'pcs' },
+    { name: 'Gatsby 100gram', category: 'Pomade', price: 'Rp50.000', stock: 24, unit: 'pcs' },
+    { name: 'Gatsby 60gr', category: 'Pomade', price: 'Rp35.000', stock: 23, unit: 'pcs' },
+    { name: 'Hair Tonic', category: 'Lainnya', price: 'Rp25.000', stock: 28, unit: 'pcs' },
+    { name: 'KMRY Hair Powder', category: 'Lainnya', price: 'Rp35.000', stock: 20, unit: 'pcs' },
+    { name: 'Serum Rambut Makarizo', category: 'Lainnya', price: 'Rp40.000', stock: 33, unit: 'pcs' },
   ] satisfies Product[],
   paymentMethods: ['Perlu diisi admin'],
   services: [

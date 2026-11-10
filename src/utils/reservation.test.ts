@@ -109,13 +109,13 @@ describe('reservation summary and WhatsApp link', () => {
     expect(createProductInquiryWhatsAppUrl('', 'Pomade')).toBeNull();
   });
 
-  it('keeps the interviewed product prices and stock in the catalog', () => {
+  it('keeps the retail catalog products, prices, categories, and recorded stock', () => {
     expect(shop.products).toEqual([
-      { name: 'Serum Rambut', price: 'Rp40.000', stock: 50, unit: 'pcs' },
-      { name: 'Hair Tonik', price: 'Rp25.000', stock: 50, unit: 'pcs' },
-      { name: 'Dust / Hair Powder', price: 'Rp35.000', stock: 50, unit: 'pcs' },
-      { name: 'Pomade 120gr', price: 'Rp50.000', stock: 25, unit: 'pcs' },
-      { name: 'Pomade 100gr', price: 'Rp40.000', stock: 25, unit: 'pcs' },
+      { name: 'Gatsby 100gram', category: 'Pomade', price: 'Rp50.000', stock: 24, unit: 'pcs' },
+      { name: 'Gatsby 60gr', category: 'Pomade', price: 'Rp35.000', stock: 23, unit: 'pcs' },
+      { name: 'Hair Tonic', category: 'Lainnya', price: 'Rp25.000', stock: 28, unit: 'pcs' },
+      { name: 'KMRY Hair Powder', category: 'Lainnya', price: 'Rp35.000', stock: 20, unit: 'pcs' },
+      { name: 'Serum Rambut Makarizo', category: 'Lainnya', price: 'Rp40.000', stock: 33, unit: 'pcs' },
     ]);
   });
 });

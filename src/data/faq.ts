@@ -60,8 +60,8 @@ export const faq: FaqEntry[] = [
   },
   {
     intent: 'products',
-    keywords: ['produk', 'pomade', 'wax', 'sampo', 'shampoo'],
-    answer: `Daftar produk berdasarkan wawancara langsung: ${shop.products.map((product) => `${product.name} (${product.price}, stok ${product.stock} ${product.unit})`).join('; ')}. Stok dapat berubah mengikuti penjualan; silakan konfirmasi ketersediaan terbaru kepada admin.`,
+    keywords: ['produk', 'pomade', 'gatsby', 'hair tonic', 'hair powder', 'serum rambut', 'makarizo'],
+    answer: getProductAnswer('produk') ?? unknown,
   },
   {
     intent: 'payment',
@@ -82,6 +82,22 @@ function normalizeText(value: string): string {
     .trim();
 }
 
+function getProductAnswer(question: string): string | null {
+  const normalized = normalizeText(question);
+  const matchingProducts = shop.products.filter((product) => {
+    const name = normalizeText(product.name);
+    const distinctiveWords = name.split(' ').filter((word) => !['hair', 'rambut'].includes(word));
+    return normalized.includes(name)
+      || distinctiveWords.some((word) => ` ${normalized} `.includes(` ${word} `))
+      || ` ${normalized} `.includes(` ${normalizeText(product.category)} `);
+  });
+  const asksAboutProducts = /\b(?:produk|jual|dijual)\b/.test(normalized) || matchingProducts.length > 0;
+  if (!asksAboutProducts) return null;
+
+  const products = matchingProducts.length > 0 ? matchingProducts : shop.products;
+  return `Produk dalam katalog Bone Barber Shop: ${products.map((product) => `${product.name} (${product.category}, ${product.price}, stok tercatat ${product.stock} ${product.unit})`).join('; ')}. Catatan stok bukan data real-time dan dapat berubah; silakan konfirmasi ketersediaan terbaru kepada admin.`;
+}
+
 export function getFaqAnswer(question: string): string {
   const normalized = normalizeText(question);
   if (!normalized) return unknown;
@@ -92,6 +108,9 @@ export function getFaqAnswer(question: string): string {
   )) {
     return booking.answer;
   }
+
+  const productAnswer = getProductAnswer(question);
+  if (productAnswer) return productAnswer;
 
   const ranked = faq
     .map((entry) => ({

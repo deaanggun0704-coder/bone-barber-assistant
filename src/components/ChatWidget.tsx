@@ -32,11 +32,11 @@ function getBotReply(text: string): Omit<Message, 'id' | 'sender'> {
   }
   if (text.trim().toLocaleLowerCase('id-ID') === 'pilih produk') {
     return {
-      text: 'Berikut produk, harga jual, dan stok berdasarkan wawancara langsung:',
+      text: 'Berikut produk dan harga jual pada katalog. Stok yang tercantum adalah catatan, bukan data real-time:',
       options: shop.products.map((product) => ({
         kind: 'product',
         value: product.name,
-        label: `${product.name} · ${product.price} · Stok ${product.stock} ${product.unit}`,
+        label: `${product.name} · ${product.category} · ${product.price} · Stok tercatat ${product.stock} ${product.unit}`,
       })),
     };
   }
@@ -115,7 +115,7 @@ export function ChatWidget() {
       const url = createProductInquiryWhatsAppUrl(businessConfig.adminWhatsApp, option.value);
       return {
         text: product
-          ? `Pilihan Anda: ${product.name}. Harga jual ${product.price}; stok tercatat ${product.stock} ${product.unit}. Stok bisa berubah mengikuti penjualan.`
+          ? `Pilihan Anda: ${product.name} (${product.category}). Harga jual ${product.price}; stok tercatat ${product.stock} ${product.unit}, bukan data real-time. Stok bisa berubah mengikuti penjualan.`
           : `Produk ${option.value} tidak ditemukan di katalog.`,
         ...(url ? { action: { label: 'Tanyakan produk via WhatsApp', href: url, external: true } } : {}),
       };
